@@ -1,12 +1,12 @@
 // Lesson: Writing your first tests
-export function max(a, b) {
+export function max(a: number, b: number): number {
   if (a > b) return a;
   else if (b > a) return b;
   return a;
 }
 
 // Exercise
-export function fizzBuzz(n) {
+export function fizzBuzz(n: number): string {
   if (n % 3 === 0 && n % 5 === 0) return 'FizzBuzz';
   if (n % 3 === 0) return 'Fizz';
   if (n % 5 === 0) return 'Buzz';

@@ -1,15 +1,18 @@
 {
-  "name": "javascript-testing",
+  "name": "typescript-testing",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "vite": "^5.0.0"
+    "vite": "^5.0.0",
+    "typescript": "^5.0.0",
+    "@types/node": "^18.0.0"
   },
   "dependencies": {
     "delay": "^6.0.0"
