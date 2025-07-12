@@ -109,6 +109,51 @@ describe("isPriceInRange", () => {
   });
 });
 
+describe("isPriceInRange2", () => {
+  it.each([
+    {
+      scenario: "price < min",
+      price: 5,
+      min: 10,
+      max: 20,
+      expectedResult: false,
+    },
+    {
+      scenario: "price = min",
+      price: 10,
+      min: 10,
+      max: 20,
+      expectedResult: true,
+    },
+    {
+      scenario: "price between min and max",
+      price: 10,
+      min: 3,
+      max: 20,
+      expectedResult: true,
+    },
+    {
+      scenario: "price = max",
+      price: 20,
+      min: 10,
+      max: 20,
+      expectedResult: true,
+    },
+    {
+      scenario: "price > max",
+      price: 30,
+      min: 10,
+      max: 20,
+      expectedResult: false,
+    },
+  ])(
+    "should return $expectedResult when $scenario",
+    ({ price, min, max, expectedResult }) => {
+      expect(isPriceInRange(price, min, max)).toBe(expectedResult);
+    }
+  );
+});
+
 describe("isValidUsername", () => {
   const minLength = 5;
   const maxLength = 15;
@@ -185,4 +230,20 @@ describe("canDrive", () => {
       true
     );
   });
+});
+
+describe("canDrive2", () => {
+  it.each([
+    { age: 15, country: "US", result: false },
+    { age: 16, country: "US", result: true },
+    { age: 17, country: "US", result: true },
+    { age: 16, country: "UK", result: false },
+    { age: 17, country: "UK", result: true },
+    { age: 18, country: "UK", result: true },
+  ])(
+    "should return $result for ($age, $country)",
+    ({ age, country, result }) => {
+      expect(canDrive(age, country)).toBe(result);
+    }
+  );
 });
