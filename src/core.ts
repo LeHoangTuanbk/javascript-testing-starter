@@ -86,6 +86,7 @@ export function canDrive(age: number, countryCode: string): boolean | string {
 
 // Lesson: Testing asynchronous code
 export function fetchData(): Promise<number[]> {
+  return Promise.reject({ message: "Error load data" });
   return new Promise((resolve) => {
     setTimeout(() => {
       const data = [1, 2, 3];
