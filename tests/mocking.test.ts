@@ -1,8 +1,10 @@
 import { vi, it, expect, describe, afterEach, beforeEach } from "vitest";
 import { getExchangeRate } from "../src/libs/currency";
 import {
+  getDiscount,
   getPriceInCurrency,
   getShippingInfo,
+  isOnline,
   login,
   renderPage,
   signUp,
@@ -165,5 +167,37 @@ describe("login", () => {
     const securityCode = spy.mock.results[0].value.toString();
 
     expect(sendEmail).toHaveBeenLastCalledWith(email, securityCode);
+  });
+});
+
+describe("isOnline", () => {
+  it("should return true if current hour is within opening hours", () => {
+    vi.setSystemTime("2025-01-01 08:00");
+    expect(isOnline()).toBe(true);
+
+    vi.setSystemTime("2025-01-01 20:00");
+    expect(isOnline()).toBe(true);
+  });
+
+  it("should return false if current hour is outside opening hours", () => {
+    vi.setSystemTime("2025-01-01 07:59");
+    expect(isOnline()).toBe(false);
+
+    vi.setSystemTime("2025-01-01 20:01");
+    expect(isOnline()).toBe(false);
+  });
+});
+
+describe("getDiscount", () => {
+  it("should return discount = 0.2 when on Christmas day", () => {
+    vi.setSystemTime("2025-12-25");
+    expect(getDiscount()).toBe(0.2);
+  });
+
+  it("should return discount = 0 when any other day", () => {
+    vi.setSystemTime("2025-12-24");
+    expect(getDiscount()).toBe(0);
+    vi.setSystemTime("2025-12-26");
+    expect(getDiscount()).toBe(0);
   });
 });

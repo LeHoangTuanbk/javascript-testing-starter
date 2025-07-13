@@ -1,28 +1,28 @@
-import { trackPageView } from './libs/analytics';
-import { getExchangeRate } from './libs/currency';
-import { isValidEmail, sendEmail } from './libs/email';
-import { charge } from './libs/payment';
-import security from './libs/security';
-import { getShippingQuote } from './libs/shipping';
+import { trackPageView } from "./libs/analytics";
+import { getExchangeRate } from "./libs/currency";
+import { isValidEmail, sendEmail } from "./libs/email";
+import { charge } from "./libs/payment";
+import security from "./libs/security";
+import { getShippingQuote } from "./libs/shipping";
 
 // Lesson: Mocking modules
 export function getPriceInCurrency(price: number, currency: string): number {
-  const rate = getExchangeRate('USD', currency);
+  const rate = getExchangeRate("USD", currency);
   return price * rate;
 }
 
 // Exercise
 export function getShippingInfo(destination: string): string {
   const quote = getShippingQuote(destination);
-  if (!quote) return 'Shipping Unavailable';
+  if (!quote) return "Shipping Unavailable";
   return `Shipping Cost: $${quote.cost} (${quote.estimatedDays} Days)`;
 }
 
 // Lesson: Interaction testing
 export async function renderPage(): Promise<string> {
-  trackPageView('/home');
+  trackPageView("/home");
 
-  return '<div>content</div>';
+  return "<div>content</div>";
 }
 
 // Exercise
@@ -46,11 +46,17 @@ interface OrderResult {
   error?: string;
 }
 
-export async function submitOrder(order: Order, creditCard: CreditCard): Promise<OrderResult> {
-  const paymentResult: PaymentResult = await charge(creditCard, order.totalAmount);
+export async function submitOrder(
+  order: Order,
+  creditCard: CreditCard
+): Promise<OrderResult> {
+  const paymentResult: PaymentResult = await charge(
+    creditCard,
+    order.totalAmount
+  );
 
-  if (paymentResult.status === 'failed')
-    return { success: false, error: 'payment_error' };
+  if (paymentResult.status === "failed")
+    return { success: false, error: "payment_error" };
 
   return { success: true };
 }
@@ -59,7 +65,7 @@ export async function submitOrder(order: Order, creditCard: CreditCard): Promise
 export async function signUp(email: string): Promise<boolean> {
   if (!isValidEmail(email)) return false;
 
-  await sendEmail(email, 'Welcome aboard!');
+  await sendEmail(email, "Welcome aboard!");
 
   return true;
 }
@@ -73,11 +79,12 @@ export async function login(email: string): Promise<void> {
 
 // Lesson: Mocking dates
 export function isOnline(): boolean {
-  const availableHours = [8, 20];
-  const [open, close] = availableHours;
-  const currentHour = new Date().getHours();
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const openMinutes = 8 * 60;
+  const closeMinutes = 20 * 60;
 
-  return currentHour >= open && currentHour <= close;
+  return currentMinutes >= openMinutes && currentMinutes <= closeMinutes;
 }
 
 // Exercise
